@@ -1,0 +1,31 @@
+# OS and editor files
+.DS_Store
+Thumbs.db
+desktop.ini
+*.swp
+*~
+.vscode/
+.idea/
+
+# Secrets and local environment
+.env
+.env.*
+
+# Logs and scratch
+*.log
+*.tmp
+*.bak
+tmp/
+temp/
+scratch/
+
+# Power BI binaries (this repository publishes no report source)
+*.pbix
+*.pbit
+
+# Raw or unredacted screenshots. Only redacted images belong in assets/.
+raw/
+unredacted/
+screenshots-raw/
+*-raw.png
+*-unredacted.png

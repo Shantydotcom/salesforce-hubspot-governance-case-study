@@ -1,0 +1,74 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1140" height="560" viewBox="0 0 1140 560" role="img" aria-labelledby="title desc">
+  <title id="title">Exception lifecycle</title>
+  <desc id="desc">A HubSpot-originated contact is received and evaluated. If the required handoff information is present it is Synced; otherwise it is Needs Review with a readable reason. After remediation it is re-evaluated automatically. A governed, sales-ready contact produces one follow-up for Sales. Error is reserved for genuine technical failures.</desc>
+  <defs>
+    <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#334155"/>
+    </marker>
+  </defs>
+  <style>
+    text { font-family: "Segoe UI", -apple-system, "Helvetica Neue", Arial, sans-serif; fill: #0f172a; }
+    .h { font-size: 16px; font-weight: 600; }
+    .s { font-size: 12.5px; fill: #334155; }
+    .note { font-size: 12px; fill: #475569; }
+    .lbl { font-size: 12.5px; font-weight: 600; fill: #334155; }
+    .node { fill: #eef4fb; stroke: #1f4e79; stroke-width: 2; }
+    .ok { fill: #ecfdf3; stroke: #15803d; stroke-width: 2; }
+    .warn { fill: #fffbeb; stroke: #b45309; stroke-width: 2; }
+    .grey { fill: #f8fafc; stroke: #94a3b8; stroke-width: 1.2; stroke-dasharray: 5 4; }
+    .edge { stroke: #334155; stroke-width: 1.8; fill: none; }
+  </style>
+
+  <rect x="0" y="0" width="1140" height="560" fill="#ffffff"/>
+  <text x="40" y="40" class="h" style="font-size:20px">Exception lifecycle: HubSpot-originated contact in Salesforce</text>
+  <text x="40" y="64" class="note">Conceptual states and outcomes. Synthetic data.</text>
+
+  <!-- Error note -->
+  <rect x="40" y="92" width="270" height="70" rx="8" class="grey"/>
+  <text x="56" y="118" class="lbl">Error</text>
+  <text x="56" y="138" class="s">Reserved for genuine technical failures.</text>
+  <text x="56" y="155" class="s">Never used for missing business data.</text>
+
+  <!-- Received -->
+  <rect x="40" y="232" width="150" height="60" rx="10" class="node"/>
+  <text x="62" y="259" class="h">Received</text>
+  <text x="62" y="279" class="s">HubSpot-originated</text>
+  <path d="M190,262 L238,262" class="edge" marker-end="url(#arrow)"/>
+
+  <!-- Decision -->
+  <path d="M360,187 L480,262 L360,337 L240,262 Z" class="node"/>
+  <text x="360" y="248" class="lbl" text-anchor="middle">Governance evaluation</text>
+  <text x="360" y="268" class="s" text-anchor="middle">Required handoff</text>
+  <text x="360" y="285" class="s" text-anchor="middle">information present?</text>
+
+  <!-- Yes to Synced -->
+  <path d="M480,262 L520,262 L520,135 L558,135" class="edge" marker-end="url(#arrow)"/>
+  <text x="528" y="200" class="lbl">Yes</text>
+  <rect x="560" y="100" width="240" height="70" rx="10" class="ok"/>
+  <text x="580" y="130" class="h">Synced</text>
+  <text x="580" y="152" class="s">Ready for Sales</text>
+
+  <!-- Synced to follow-up -->
+  <path d="M800,135 L868,135" class="edge" marker-end="url(#arrow)"/>
+  <text x="834" y="124" class="note" text-anchor="middle">sales-ready</text>
+  <rect x="870" y="100" width="230" height="70" rx="10" class="node"/>
+  <text x="890" y="130" class="h">Sales follow-up</text>
+  <text x="890" y="152" class="s">Duplicate follow-up prevented</text>
+
+  <!-- No to Needs Review -->
+  <path d="M360,337 L360,405 L558,405" class="edge" marker-end="url(#arrow)"/>
+  <text x="368" y="372" class="lbl">No</text>
+  <rect x="560" y="370" width="240" height="70" rx="10" class="warn"/>
+  <text x="580" y="400" class="h">Needs Review</text>
+  <text x="580" y="422" class="s">Readable reason; queued to fix</text>
+
+  <!-- Needs Review to remediation -->
+  <path d="M800,405 L868,405" class="edge" marker-end="url(#arrow)"/>
+  <rect x="870" y="370" width="230" height="70" rx="10" class="node"/>
+  <text x="890" y="400" class="h">Remediated</text>
+  <text x="890" y="422" class="s">Data steward fixes the data</text>
+
+  <!-- Loop back -->
+  <path d="M985,440 L985,500 L215,500 L215,266" class="edge" marker-end="url(#arrow)"/>
+  <text x="600" y="492" class="lbl" text-anchor="middle">Re-evaluated automatically: reason clears when fixed</text>
+</svg>

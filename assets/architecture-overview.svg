@@ -1,0 +1,112 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1240" height="600" viewBox="0 0 1240 600" role="img" aria-labelledby="title desc">
+  <title id="title">Architecture overview</title>
+  <desc id="desc">HubSpot-originated contacts cross a simulated, governed handoff boundary into Salesforce, where governance classification, exception remediation, sales follow-up and operational reporting run for real. Power BI reads the results read-only.</desc>
+  <defs>
+    <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#334155"/>
+    </marker>
+    <marker id="arrow-grey" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#64748b"/>
+    </marker>
+  </defs>
+  <style>
+    text { font-family: "Segoe UI", -apple-system, "Helvetica Neue", Arial, sans-serif; fill: #0f172a; }
+    .h { font-size: 16px; font-weight: 600; }
+    .s { font-size: 12.5px; fill: #334155; }
+    .note { font-size: 12px; fill: #475569; }
+    .tag { font-size: 11px; font-weight: 700; letter-spacing: 0.5px; }
+    .real { fill: #eef4fb; stroke: #1f4e79; stroke-width: 2; }
+    .sim { fill: #fff8ec; stroke: #b26b00; stroke-width: 2; stroke-dasharray: 7 5; }
+    .sub { fill: #ffffff; stroke: #1f4e79; stroke-width: 1.5; }
+    .grey { fill: #f8fafc; stroke: #94a3b8; stroke-width: 1.2; }
+    .edge { stroke: #334155; stroke-width: 1.8; fill: none; }
+    .ro { stroke: #64748b; stroke-width: 1.8; fill: none; stroke-dasharray: 6 5; }
+  </style>
+
+  <rect x="0" y="0" width="1240" height="600" fill="#ffffff"/>
+  <text x="40" y="44" class="h" style="font-size:20px">Salesforce–HubSpot data governance: architecture overview</text>
+  <text x="40" y="68" class="note">Conceptual view. Synthetic data; fictional company.</text>
+
+  <!-- HubSpot -->
+  <rect x="40" y="200" width="200" height="130" rx="10" class="sim"/>
+  <text x="60" y="232" class="h">HubSpot</text>
+  <text x="60" y="256" class="s">Marketing system</text>
+  <text x="60" y="276" class="s">Identity · lifecycle stage</text>
+  <text x="60" y="294" class="s">· original traffic source</text>
+  <text x="60" y="318" class="note">Semantics verified in a real portal</text>
+
+  <!-- HubSpot to boundary -->
+  <path d="M240,265 L298,265" class="edge" marker-end="url(#arrow)"/>
+  <text x="246" y="254" class="note">Inbound</text>
+
+  <!-- Boundary (simulated) -->
+  <rect x="300" y="185" width="240" height="160" rx="10" class="sim"/>
+  <rect x="318" y="198" width="84" height="20" rx="4" fill="#b26b00"/>
+  <text x="326" y="212" class="tag" style="fill:#ffffff">SIMULATED</text>
+  <text x="318" y="242" class="h">Governed handoff</text>
+  <text x="318" y="262" class="h">boundary</text>
+  <text x="318" y="286" class="s">Modeled inbound load</text>
+  <text x="318" y="304" class="s">Matched by HubSpot identity</text>
+  <text x="318" y="322" class="s">Duplicate protection active</text>
+
+  <!-- Boundary outcomes -->
+  <path d="M370,345 L370,398" class="edge" marker-end="url(#arrow)"/>
+  <path d="M470,345 L470,398" class="edge" marker-end="url(#arrow)"/>
+  <rect x="300" y="400" width="140" height="48" rx="6" class="grey"/>
+  <text x="312" y="420" class="s">Blocked:</text>
+  <text x="312" y="438" class="s">likely duplicate</text>
+  <rect x="448" y="400" width="140" height="48" rx="6" class="grey"/>
+  <text x="460" y="420" class="s">Not sent:</text>
+  <text x="460" y="438" class="s">outside handoff scope</text>
+
+  <!-- Boundary to Salesforce -->
+  <path d="M540,265 L598,265" class="edge" marker-end="url(#arrow)"/>
+  <text x="546" y="254" class="note">Received</text>
+
+  <!-- Salesforce container (real) -->
+  <rect x="600" y="100" width="390" height="410" rx="12" class="real"/>
+  <rect x="620" y="114" width="52" height="20" rx="4" fill="#1f4e79"/>
+  <text x="630" y="128" class="tag" style="fill:#ffffff">REAL</text>
+  <text x="684" y="130" class="h">Salesforce: system of record</text>
+
+  <rect x="630" y="150" width="330" height="62" rx="8" class="sub"/>
+  <text x="648" y="176" class="h">Governance classification</text>
+  <text x="648" y="198" class="s">Verdict: Synced or Needs Review</text>
+
+  <path d="M795,212 L795,236" class="edge" marker-end="url(#arrow)"/>
+
+  <rect x="630" y="238" width="330" height="62" rx="8" class="sub"/>
+  <text x="648" y="264" class="h">Exceptions and remediation</text>
+  <text x="648" y="286" class="s">Readable reason · automatic re-evaluation</text>
+
+  <path d="M795,300 L795,324" class="edge" marker-end="url(#arrow)"/>
+
+  <rect x="630" y="326" width="330" height="62" rx="8" class="sub"/>
+  <text x="648" y="352" class="h">Sales follow-up</text>
+  <text x="648" y="374" class="s">Only after governed readiness</text>
+
+  <rect x="630" y="414" width="330" height="62" rx="8" class="sub"/>
+  <text x="648" y="440" class="h">Operational reports</text>
+  <text x="648" y="462" class="s">Remediation queue · HubSpot-originated inventory</text>
+
+  <!-- Salesforce to Power BI (read-only) -->
+  <path d="M990,300 L1046,300" class="ro" marker-end="url(#arrow-grey)"/>
+  <text x="1018" y="322" class="note" text-anchor="middle" style="font-size:10.5px">Read-only</text>
+
+  <!-- Power BI (real) -->
+  <rect x="1048" y="225" width="172" height="150" rx="10" class="real"/>
+  <rect x="1064" y="239" width="52" height="20" rx="4" fill="#1f4e79"/>
+  <text x="1074" y="253" class="tag" style="fill:#ffffff">REAL</text>
+  <text x="1064" y="284" class="h">Power BI</text>
+  <text x="1064" y="306" class="s">Integration-health</text>
+  <text x="1064" y="324" class="s">console</text>
+  <text x="1064" y="350" class="note">Never writes back</text>
+
+  <!-- Legend -->
+  <rect x="40" y="540" width="26" height="16" rx="3" class="real"/>
+  <text x="74" y="553" class="note">Real: implemented and verified</text>
+  <rect x="300" y="540" width="26" height="16" rx="3" class="sim"/>
+  <text x="334" y="553" class="note">Simulated / modeled</text>
+  <path d="M520,548 L560,548" class="ro" marker-end="url(#arrow-grey)"/>
+  <text x="570" y="553" class="note">Read-only relationship</text>
+</svg>
