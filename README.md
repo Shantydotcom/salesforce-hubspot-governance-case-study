@@ -35,7 +35,7 @@ In a modeled handoff of 24 contact submissions, used for the analytics:
 
 | Layer | What it does |
 |---|---|
-| Revenue Handoff Integration | Reads approved contacts from HubSpot and creates or updates them in Salesforce by their HubSpot identity. It sends marketing data only, through a dedicated integration identity that cannot set governance state, ownership or account association |
+| Revenue Handoff Integration | Reads approved contacts from HubSpot and creates or updates them in Salesforce by their HubSpot identity. It sends marketing data only, through a dedicated integration identity that cannot write governance state or the account association. It never sends ownership; assigning an owner remains a separate Salesforce steward decision |
 | Governance classification | Gives every HubSpot-originated contact a verdict, Synced (ready for Sales) or Needs Review, together with the reason |
 | Exception remediation | Fixing a flagged record triggers automatic re-evaluation; nothing has to be cleared by hand |
 | Sales follow-up | Sales gets a follow-up only once a contact is both governed and sales-ready; duplicate follow-ups are prevented |
