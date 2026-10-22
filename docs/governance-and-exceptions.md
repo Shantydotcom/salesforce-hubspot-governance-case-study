@@ -26,11 +26,11 @@ The handoff minimum is a contact email, a linked company account and a lifecycle
 
 ![Salesforce remediation queue](../assets/salesforce-exceptions-report.png)
 
-*Salesforce remediation queue: HubSpot-originated contacts that need attention, with readable reasons.*
+*Salesforce remediation queue: HubSpot-originated contacts from the modeled handoff that need attention, with readable reasons.*
 
 ![Contact governance state](../assets/salesforce-contact-governance.png)
 
-*Salesforce governance state on a HubSpot-originated contact awaiting remediation.*
+*Salesforce governance state on a modeled HubSpot-originated contact awaiting remediation.*
 
 ## Business exceptions vs. technical failures
 
@@ -42,6 +42,8 @@ There are two different kinds of problem, and they are handled in different plac
 ## Sales follow-up
 
 Sales receives a follow-up only when a contact is governed **and** sales-ready. Lifecycle stage alone is not enough: a sales-ready contact with missing information waits in the remediation queue until it is fixed. Duplicate follow-ups are prevented.
+
+The follow-up goes to the contact owner. Contacts created by the custom integration are owned by the integration identity at intake, and assigning a human owner is a separate steward decision. Governance readiness doesn't depend on the owner, but the follow-up does, so ownership has to be settled before a sales-ready contact is remediated.
 
 ## Duplicates
 

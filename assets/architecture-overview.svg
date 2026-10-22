@@ -1,6 +1,6 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="1240" height="600" viewBox="0 0 1240 600" role="img" aria-labelledby="title desc">
+<svg xmlns="http://www.w3.org/2000/svg" width="1240" height="680" viewBox="0 0 1240 680" role="img" aria-labelledby="title desc">
   <title id="title">Architecture overview</title>
-  <desc id="desc">HubSpot-originated contacts cross a simulated, governed handoff boundary into Salesforce, where governance classification, exception remediation, sales follow-up and operational reporting run for real. Power BI reads the results read-only.</desc>
+  <desc id="desc">HubSpot contacts move into Salesforce through Revenue Handoff Integration, a custom HubSpot to Salesforce API integration that runs on demand for approved records through a dedicated integration identity. A separate modeled handoff population of synthetic contacts is also loaded into Salesforce. Salesforce evaluates every HubSpot-originated contact: Synced contacts can receive a sales follow-up, Needs Review contacts are remediated by a data steward and re-evaluated automatically, and operational reports show the queue. Power BI reads the modeled population only, read-only.</desc>
   <defs>
     <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse">
       <path d="M0,0 L10,5 L0,10 z" fill="#334155"/>
@@ -18,95 +18,117 @@
     .real { fill: #eef4fb; stroke: #1f4e79; stroke-width: 2; }
     .sim { fill: #fff8ec; stroke: #b26b00; stroke-width: 2; stroke-dasharray: 7 5; }
     .sub { fill: #ffffff; stroke: #1f4e79; stroke-width: 1.5; }
-    .grey { fill: #f8fafc; stroke: #94a3b8; stroke-width: 1.2; }
+    .ok { fill: #ecfdf3; stroke: #15803d; stroke-width: 1.8; }
+    .warn { fill: #fffbeb; stroke: #b45309; stroke-width: 1.8; }
     .edge { stroke: #334155; stroke-width: 1.8; fill: none; }
     .ro { stroke: #64748b; stroke-width: 1.8; fill: none; stroke-dasharray: 6 5; }
   </style>
 
-  <rect x="0" y="0" width="1240" height="600" fill="#ffffff"/>
+  <rect x="0" y="0" width="1240" height="680" fill="#ffffff"/>
   <text x="40" y="44" class="h" style="font-size:20px">Salesforce–HubSpot data governance: architecture overview</text>
   <text x="40" y="68" class="note">Conceptual view. Synthetic data; fictional company.</text>
 
   <!-- HubSpot -->
-  <rect x="40" y="200" width="200" height="130" rx="10" class="sim"/>
-  <text x="60" y="232" class="h">HubSpot</text>
-  <text x="60" y="256" class="s">Marketing system</text>
-  <text x="60" y="276" class="s">Identity · lifecycle stage</text>
-  <text x="60" y="294" class="s">· original traffic source</text>
-  <text x="60" y="318" class="note">Semantics verified in a real portal</text>
+  <rect x="40" y="110" width="200" height="150" rx="10" class="real"/>
+  <text x="58" y="142" class="h">HubSpot</text>
+  <text x="58" y="164" class="s">Marketing system</text>
+  <text x="58" y="186" class="s">Identity · lifecycle stage</text>
+  <text x="58" y="204" class="s">· original traffic source</text>
+  <text x="58" y="242" class="note">Read-only to the integration</text>
 
-  <!-- HubSpot to boundary -->
-  <path d="M240,265 L298,265" class="edge" marker-end="url(#arrow)"/>
-  <text x="246" y="254" class="note">Inbound</text>
+  <path d="M240,185 L288,185" class="edge" marker-end="url(#arrow)"/>
 
-  <!-- Boundary (simulated) -->
-  <rect x="300" y="185" width="240" height="160" rx="10" class="sim"/>
-  <rect x="318" y="198" width="84" height="20" rx="4" fill="#b26b00"/>
-  <text x="326" y="212" class="tag" style="fill:#ffffff">SIMULATED</text>
-  <text x="318" y="242" class="h">Governed handoff</text>
-  <text x="318" y="262" class="h">boundary</text>
-  <text x="318" y="286" class="s">Modeled inbound load</text>
-  <text x="318" y="304" class="s">Matched by HubSpot identity</text>
-  <text x="318" y="322" class="s">Duplicate protection active</text>
+  <!-- Revenue Handoff Integration -->
+  <rect x="290" y="100" width="250" height="170" rx="10" class="real"/>
+  <rect x="306" y="114" width="52" height="20" rx="4" fill="#1f4e79"/>
+  <text x="316" y="128" class="tag" style="fill:#ffffff">REAL</text>
+  <text x="306" y="160" class="h">Revenue Handoff Integration</text>
+  <text x="306" y="182" class="s">Custom HubSpot → Salesforce</text>
+  <text x="306" y="200" class="s">API integration</text>
+  <text x="306" y="224" class="s">On demand · approved records only</text>
+  <text x="306" y="242" class="s">Dedicated integration identity</text>
+  <text x="306" y="260" class="s">Upsert by HubSpot identity</text>
 
-  <!-- Boundary outcomes -->
-  <path d="M370,345 L370,398" class="edge" marker-end="url(#arrow)"/>
-  <path d="M470,345 L470,398" class="edge" marker-end="url(#arrow)"/>
-  <rect x="300" y="400" width="140" height="48" rx="6" class="grey"/>
-  <text x="312" y="420" class="s">Blocked:</text>
-  <text x="312" y="438" class="s">likely duplicate</text>
-  <rect x="448" y="400" width="140" height="48" rx="6" class="grey"/>
-  <text x="460" y="420" class="s">Not sent:</text>
-  <text x="460" y="438" class="s">outside handoff scope</text>
+  <text x="550" y="155" class="note">Live API</text>
 
-  <!-- Boundary to Salesforce -->
-  <path d="M540,265 L598,265" class="edge" marker-end="url(#arrow)"/>
-  <text x="546" y="254" class="note">Received</text>
+  <!-- Modeled handoff population -->
+  <rect x="40" y="330" width="500" height="130" rx="10" class="sim"/>
+  <rect x="56" y="344" width="78" height="20" rx="4" fill="#b26b00"/>
+  <text x="64" y="358" class="tag" style="fill:#ffffff">MODELED</text>
+  <text x="56" y="390" class="h">Modeled handoff population</text>
+  <text x="56" y="412" class="s">24 synthetic submissions loaded into Salesforce by HubSpot identity</text>
+  <text x="56" y="430" class="s">21 received · 2 blocked as likely duplicates · 1 not sent (out of scope)</text>
+  <text x="56" y="448" class="note">Feeds the analytics demonstration</text>
 
-  <!-- Salesforce container (real) -->
-  <rect x="600" y="100" width="390" height="410" rx="12" class="real"/>
-  <rect x="620" y="114" width="52" height="20" rx="4" fill="#1f4e79"/>
-  <text x="630" y="128" class="tag" style="fill:#ffffff">REAL</text>
-  <text x="684" y="130" class="h">Salesforce: system of record</text>
 
-  <rect x="630" y="150" width="330" height="62" rx="8" class="sub"/>
-  <text x="648" y="176" class="h">Governance classification</text>
-  <text x="648" y="198" class="s">Verdict: Synced or Needs Review</text>
+  <!-- Salesforce container -->
+  <rect x="600" y="100" width="410" height="480" rx="12" class="real"/>
+  <rect x="616" y="112" width="52" height="20" rx="4" fill="#1f4e79"/>
+  <text x="626" y="126" class="tag" style="fill:#ffffff">REAL</text>
+  <text x="680" y="128" class="h">Salesforce: system of record</text>
 
-  <path d="M795,212 L795,236" class="edge" marker-end="url(#arrow)"/>
+  <rect x="620" y="145" width="370" height="54" rx="8" class="sub"/>
+  <text x="638" y="168" class="h">HubSpot-originated Contact</text>
+  <text x="638" y="188" class="s">Arrives with marketing data only</text>
 
-  <rect x="630" y="238" width="330" height="62" rx="8" class="sub"/>
-  <text x="648" y="264" class="h">Exceptions and remediation</text>
-  <text x="648" y="286" class="s">Readable reason · automatic re-evaluation</text>
+  <path d="M805,199 L805,221" class="edge" marker-end="url(#arrow)"/>
 
-  <path d="M795,300 L795,324" class="edge" marker-end="url(#arrow)"/>
+  <rect x="620" y="223" width="370" height="54" rx="8" class="sub"/>
+  <text x="638" y="246" class="h">Governance evaluation</text>
+  <text x="638" y="266" class="s">Email · linked account · lifecycle stage</text>
 
-  <rect x="630" y="326" width="330" height="62" rx="8" class="sub"/>
-  <text x="648" y="352" class="h">Sales follow-up</text>
-  <text x="648" y="374" class="s">Only after governed readiness</text>
+  <path d="M707,277 L707,299" class="edge" marker-end="url(#arrow)"/>
+  <path d="M902,277 L902,299" class="edge" marker-end="url(#arrow)"/>
 
-  <rect x="630" y="414" width="330" height="62" rx="8" class="sub"/>
-  <text x="648" y="440" class="h">Operational reports</text>
-  <text x="648" y="462" class="s">Remediation queue · HubSpot-originated inventory</text>
+  <rect x="620" y="301" width="175" height="54" rx="8" class="ok"/>
+  <text x="636" y="324" class="h">Synced</text>
+  <text x="636" y="344" class="s">Ready for Sales</text>
+
+  <rect x="815" y="301" width="175" height="54" rx="8" class="warn"/>
+  <text x="831" y="324" class="h">Needs Review</text>
+  <text x="831" y="344" class="s">Readable reason</text>
+
+  <path d="M707,355 L707,377" class="edge" marker-end="url(#arrow)"/>
+  <path d="M902,355 L902,377" class="edge" marker-end="url(#arrow)"/>
+
+  <rect x="620" y="379" width="175" height="62" rx="8" class="sub"/>
+  <text x="636" y="402" class="h">Sales follow-up</text>
+  <text x="636" y="422" class="s">Sales-ready contacts only</text>
+
+  <rect x="815" y="379" width="175" height="62" rx="8" class="sub"/>
+  <text x="831" y="402" class="h">Steward remediation</text>
+  <text x="831" y="422" class="s">Data fixed in Salesforce</text>
+
+  <!-- Re-evaluation loop -->
+  <path d="M990,410 L1000,410 L1000,250 L992,250" class="edge" marker-end="url(#arrow)"/>
+  <text x="831" y="464" class="note">Re-evaluated automatically</text>
+
+  <rect x="620" y="490" width="370" height="62" rx="8" class="sub"/>
+  <text x="638" y="514" class="h">Operational reports</text>
+  <text x="638" y="534" class="s">Remediation queue · HubSpot-originated inventory</text>
 
   <!-- Salesforce to Power BI (read-only) -->
-  <path d="M990,300 L1046,300" class="ro" marker-end="url(#arrow-grey)"/>
-  <text x="1018" y="322" class="note" text-anchor="middle" style="font-size:10.5px">Read-only</text>
+  <path d="M1010,520 L1046,520" class="ro" marker-end="url(#arrow-grey)"/>
 
-  <!-- Power BI (real) -->
-  <rect x="1048" y="225" width="172" height="150" rx="10" class="real"/>
-  <rect x="1064" y="239" width="52" height="20" rx="4" fill="#1f4e79"/>
-  <text x="1074" y="253" class="tag" style="fill:#ffffff">REAL</text>
-  <text x="1064" y="284" class="h">Power BI</text>
-  <text x="1064" y="306" class="s">Integration-health</text>
-  <text x="1064" y="324" class="s">console</text>
-  <text x="1064" y="350" class="note">Never writes back</text>
+  <!-- Power BI -->
+  <rect x="1048" y="420" width="172" height="160" rx="10" class="real"/>
+  <rect x="1064" y="434" width="52" height="20" rx="4" fill="#1f4e79"/>
+  <text x="1074" y="448" class="tag" style="fill:#ffffff">REAL</text>
+  <text x="1064" y="478" class="h">Power BI</text>
+  <text x="1064" y="500" class="s">Integration-health</text>
+  <text x="1064" y="518" class="s">console</text>
+  <text x="1064" y="542" class="note">Modeled population only</text>
+  <text x="1064" y="560" class="note">Read-only</text>
+
+  <!-- Inputs into Salesforce (drawn last so they sit above the container) -->
+  <path d="M540,165 L618,165" class="edge" marker-end="url(#arrow)"/>
+  <path d="M540,395 L570,395 L570,188 L618,188" class="edge" marker-end="url(#arrow)"/>
 
   <!-- Legend -->
-  <rect x="40" y="540" width="26" height="16" rx="3" class="real"/>
-  <text x="74" y="553" class="note">Real: implemented and verified</text>
-  <rect x="300" y="540" width="26" height="16" rx="3" class="sim"/>
-  <text x="334" y="553" class="note">Simulated / modeled</text>
-  <path d="M520,548 L560,548" class="ro" marker-end="url(#arrow-grey)"/>
-  <text x="570" y="553" class="note">Read-only relationship</text>
+  <rect x="40" y="620" width="26" height="16" rx="3" class="real"/>
+  <text x="74" y="633" class="note">Real: implemented and verified</text>
+  <rect x="300" y="620" width="26" height="16" rx="3" class="sim"/>
+  <text x="334" y="633" class="note">Modeled: synthetic population</text>
+  <path d="M560,628 L600,628" class="ro" marker-end="url(#arrow-grey)"/>
+  <text x="610" y="633" class="note">Read-only relationship</text>
 </svg>

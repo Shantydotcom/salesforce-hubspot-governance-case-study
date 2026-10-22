@@ -6,7 +6,9 @@ The Power BI page **CRM Data & Integration Health**, in its Pipeline Console des
 
 ![Power BI Pipeline Console](../assets/power-bi-pipeline-console.png)
 
-*Power BI Pipeline Console: integration health for the modeled inbound population (synthetic data; simulated HubSpot handoff).*
+*Power BI Pipeline Console: integration health for the modeled handoff population (synthetic data). The "simulated handoff" note on the page refers to that population.*
+
+The console reports on the modeled handoff population only: 24 synthetic submissions loaded into Salesforce. Contacts moved by the custom integration, Revenue Handoff Integration, are not included. See [Architecture](architecture.md#analytics-relationship).
 
 ## The five areas
 
@@ -26,10 +28,10 @@ The Power BI page **CRM Data & Integration Health**, in its Pipeline Console des
 ## Design principles
 
 - **Read-only.** Power BI never writes to Salesforce or HubSpot.
-- **Honest about its data.** The page states that the HubSpot handoff is simulated and the data synthetic.
+- **Honest about its data.** The page states that its handoff population is simulated and the data synthetic.
 - **No decoration.** There are no invented trends, targets or metrics the data can't support.
 - **Faithful categories.** Lifecycle stages and exception reasons are shown exactly as Salesforce stores them, not regrouped or relabelled in the report.
-- **A clean population.** Test records are excluded, so the console reflects the modeled inbound population only.
+- **A clean population.** Test records and live-integration contacts are excluded, so the console reflects the modeled handoff population only.
 
 ## Analytics vs. operations
 

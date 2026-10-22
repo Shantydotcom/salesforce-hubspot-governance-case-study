@@ -2,9 +2,9 @@
 
 ## Approach
 
-All testing ran against the real Salesforce org, using synthetic data and the actual deployed configuration and automation. Every result was confirmed by inspecting the resulting records themselves, never inferred from a tool reporting success.
+All testing ran against the real Salesforce org and the project's HubSpot developer test account, using synthetic data and the actual deployed configuration and automation. Every result was confirmed by inspecting the resulting records themselves, never inferred from a tool reporting success.
 
-Automated verification and owner acceptance were recorded separately. The project owner accepted all the results below.
+Automated verification and owner acceptance were recorded separately. The project owner accepted all the results below. Each live step of the custom integration was approved separately before it ran.
 
 ## Results
 
@@ -20,11 +20,18 @@ Automated verification and owner acceptance were recorded separately. The projec
 | Modeled handoff reconciliation | 24 submissions = 21 received + 2 blocked + 1 not sent. Received contacts = 15 Synced + 6 Needs Review | Pass. Both reconciliations balanced |
 | Read-only handoff verification | An independent, read-only verification of the modeled handoff | **9 of 9** checks passed |
 | Bulk | **200-record insert and 200-record update** in single transactions | Pass. 0 errors; classifications matched expectations after both operations; follow-ups exactly as expected with no duplicates; database queries and updates did not grow with the number of records |
-| Regression and cleanup | Retained evidence unchanged after testing; temporary test data and diagnostics removed and verified | Pass |
+| Custom integration: offline | Self-test with synthetic records and no network: value mapping, blank-value rules, the outbound field boundary, and refusal of any request outside the permitted reads and single write | **80 of 80** passed |
+| Custom integration: identity and access | The integration identity's effective access, and governance automation running for records it saves | Pass, after one defect was found and fixed |
+| Custom integration: dry runs | Dry runs against the real systems read the approved contacts, planned the change and wrote nothing | Pass |
+| Custom integration: live create | One approved live run created a fictional contact; a read-back as the integration identity matched what was sent; Salesforce classified it Needs Review for a missing account, with no follow-up created | Pass |
+| Custom integration: steward remediation | A steward linked the account; the contact was re-evaluated to Synced and the reason cleared. A dry run afterwards proposed no changes | Pass |
+| Regression and cleanup | Retained evidence unchanged after testing; temporary test data and diagnostics removed and verified; a final read-only end-to-end regression across Salesforce, HubSpot, the integration and reports | Pass |
 
 ## Findings
 
 - **Report defect.** The first version of the reports silently omitted contacts with no linked account, which are exactly the contacts that need attention most. The cause was the standard report type, which only includes contacts that have an account. The reports were rebuilt on a contact-only report type and re-verified.
+- **Permission drift.** The deployed copy of the integration permission set had drifted from source through a manual change in Setup. It was found while setting up the integration identity, corrected from source, and re-verified before any live run.
+- **Follow-up ownership.** A runtime test showed that linking the account on an integration-owned, sales-ready contact creates the sales follow-up for the integration identity, because follow-ups go to the contact owner. The steward procedure was tightened in response, and this case is treated as an open control rather than worked around.
 - **Platform side effect.** After cleanup, a platform-maintained timestamp on one retained record had changed while all of its visible business data stayed the same. The change was investigated, traced to expected Salesforce platform behavior and accepted as a documented finding, rather than ignored.
 
 *All test data was synthetic and was removed after verification, except records deliberately retained as evidence.*
